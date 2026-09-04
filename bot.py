@@ -4,17 +4,17 @@ import requests
 import time
 import os
 
-# --- BURAYA KENDİ BİLGİLERİNİZİ YAZACAKSINIZ ---
-TELEGRAM_TOKEN = "BURAYA_BOTFATHER_TOKENI_YAZ"
-CHAT_ID = "BURAYA_USERINFOBOT_ID_YAZ"
-RAPIDAPI_KEY = "BURAYA_RAPIDAPI_ANAHTARI_YAZ"
+# --- BURAYA KENDÃ BÃLGÃLERÃNÃZÃ YAZACAKSINIZ ---
+TELEGRAM_TOKEN = "8961289480:AAGkjUj82EDaku0AgSf-QHD8sP7GN-BJxGw"
+CHAT_ID = "6536751405"
+RAPIDAPI_KEY = "b1166aa376msh6bce9e879f341fap13095cjsne913c3d3cb18"
 # ---------------------------------------------
 
 app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return "Bot 7/24 Aktif ve Maçları Tarıyor!"
+    return "Bot 7/24 Aktif ve MaÃ§larÃ½ TarÃ½yor!"
 
 def telegram_mesaj_gonder(mesaj):
     try:
@@ -22,10 +22,10 @@ def telegram_mesaj_gonder(mesaj):
         payload = {"chat_id": CHAT_ID, "text": mesaj, "parse_mode": "HTML"}
         requests.post(url, data=payload)
     except Exception as e:
-        print("Telegram mesaj hatası:", e)
+        print("Telegram mesaj hatasÃ½:", e)
 
 def canli_maclari_kontrol_et():
-    print("Canlı maçlar taranıyor...")
+    print("CanlÃ½ maÃ§lar taranÃ½yor...")
     url = "https://api-football-v1.p.rapidapi.com/v3/fixtures"
     querystring = {"live": "all"}
     
@@ -38,7 +38,7 @@ def canli_maclari_kontrol_et():
         response = requests.get(url, headers=headers, params=querystring)
         data = response.json()
         
-        # Maçları tek tek inceleyelim
+        # MaÃ§larÃ½ tek tek inceleyelim
         for mac in data.get("response", []):
             dakika = mac["fixture"]["status"]["elapsed"]
             ev_sahibi = mac["teams"]["home"]["name"]
@@ -46,21 +46,21 @@ def canli_maclari_kontrol_et():
             skor_ev = mac["goals"]["home"]
             skor_dep = mac["goals"]["away"]
             
-            # ALGORİTMA: Maç 75 ile 85. dakika arasındaysa ve skor berabere ise
+            # ALGORÃTMA: MaÃ§ 75 ile 85. dakika arasÃ½ndaysa ve skor berabere ise
             if dakika is not None and 75 <= dakika <= 85 and skor_ev == skor_dep:
-                mesaj = f"?? <b>CANLI FIRSAT Yakalandı</b> ??\n\n? {ev_sahibi} {skor_ev} - {skor_dep} {deplasman}\n?? Dakika: {dakika}\n?? Analiz: Son 10 dakika baskısı, risk alınabilir!"
+                mesaj = f"?? <b>CANLI FIRSAT YakalandÃ½</b> ??\n\n? {ev_sahibi} {skor_ev} - {skor_dep} {deplasman}\n?? Dakika: {dakika}\n?? Analiz: Son 10 dakika baskÃ½sÃ½, risk alÃ½nabilir!"
                 telegram_mesaj_gonder(mesaj)
-                print(f"Bildirim gönderildi: {ev_sahibi} vs {deplasman}")
+                print(f"Bildirim gÃ¶nderildi: {ev_sahibi} vs {deplasman}")
                 
     except Exception as e:
-        print("API Veri çekilirken hata:", e)
+        print("API Veri Ã§ekilirken hata:", e)
 
 def bot_dongusu():
     while True:
         try:
             canli_maclari_kontrol_et()
         except Exception as e:
-            print("Döngü hatası:", e)
+            print("DÃ¶ngÃ¼ hatasÃ½:", e)
         time.sleep(900) # 15 dakikada bir tarar
 
 if __name__ == "__main__":
