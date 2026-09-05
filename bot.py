@@ -96,9 +96,11 @@ def bot_dongusu():
         except Exception as e:
             print("Dongu hatasi:", e)
         time.sleep(900)
-# TEST MESAJI
-telegram_mesaj_gonder("🔔 <b>TEST MESAJI:</b> Botumuz başarıyla çalışıyor ve bağlantı kuruldu!")
+
 if __name__ == "__main__":
+    # TEST MESAJI
+telegram_mesaj_gonder("🔔 <b>TEST MESAJI:</b> Botumuz başarıyla çalışıyor ve bağlantı kuruldu!")
+
     threading.Thread(target=bot_dongusu).start()
     port = int(os.environ.get("PORT", 8080))
     app.run(host="0.0.0.0", port=port)
