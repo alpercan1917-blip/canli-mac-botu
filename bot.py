@@ -57,7 +57,6 @@ def canli_maclari_kontrol_et():
             
             if dakika is not None:
                 # --- İLK YARI YÜKSEK OLASILIKLI SENARYOLARI ---
-                # İY 0.5 Üst / İY Ev veya Deplasman Gol / İY KG Var (Dakika 30-41 arası, henüz gol yoksa veya 0-0/1-0 ise)
                 if 30 <= dakika <= 41:
                     if skor_ev == 0 and skor_dep == 0:
                         mesaj = f"⚡ <b>İLK YARI YÜKSEK POTANSİYEL</b> ⚡\n\n⚽ {ev_sahibi} 0 - 0 {deplasman}\n⏱️ Dakika: {dakika}\n💡 <i>Analiz: Baskı yoğun! <b>İLK YARI 0,5 ÜST</b> veya <b>İLK YARI GOL VAR</b> olasılığı yüksek.</i>"
@@ -70,14 +69,13 @@ def canli_maclari_kontrol_et():
                         telegram_mesaj_gonder(mesaj)
 
                 # --- İKİNCİ YARI YÜKSEK OLASILIKLI SENARYOLARI ---
-                # Maçı Çevirir / İkinci Yarı 0,5 - 1,5 Üst ve KG Var (Dakika 55-70 arası tek fark veya beraberlik)
                 elif 55 <= dakika <= 70:
                     if abs(skor_ev - skor_dep) == 1:
                         geride_olan = ev_sahibi if skor_ev < skor_dep else deplasman
                         mesaj = f"🔄 <b>İKİNCİ YARI REAKSİYON FİLTRESİ</b> 🔄\n\n⚽ {ev_sahibi} {skor_ev} - {skor_dep} {deplasman}\n⏱️ Dakika: {dakika}\n💡 <i>Analiz: {geride_olan} yükleniyor. <b>İKİNCİ YARI 0,5 ÜST</b>, <b>KG VAR</b> veya <b>MAÇI ÇEVİRİR</b> potansiyeli!</i>"
                         telegram_mesaj_gonder(mesaj)
 
-                # Son Bölüm Baskısı: İkinci Yarı 1.5 Üst, 2.5 Üst, Korner ve Kart Sinyalleri (Dakika 75-87 arası)
+                # Son Bölüm Baskısı
                 elif 75 <= dakika <= 87:
                     if skor_ev == skor_dep:
                         mesaj = f"🚨 <b>KRİTİK SON DAKİKA FIRSATI</b> 🚨\n\n⚽ {ev_sahibi} {skor_ev} - {skor_dep} {deplasman}\n⏱️ Dakika: {dakika}\n💡 <i>Analiz: Skor berabere! <b>İKİNCİ YARI 1,5 ÜST</b> / <b>2,5 ÜST</b>, Korner Üst ve Sertlik (Kart) ihtimali dorukta.</i>"
@@ -98,9 +96,9 @@ def bot_dongusu():
         time.sleep(900)
 
 if __name__ == "__main__":
-    # TEST MESAJI
-telegram_mesaj_gonder("🔔 <b>TEST MESAJI:</b> Botumuz başarıyla çalışıyor ve bağlantı kuruldu!")
-
+    # Bot başlar başlamaz test mesajını Telegram'a fırlatacak
+    telegram_mesaj_gonder("🔔 <b>TEST MESAJI:</b> Botumuz başarıyla çalışıyor ve bağlantı kuruldu!")
+    
     threading.Thread(target=bot_dongusu).start()
     port = int(os.environ.get("PORT", 8080))
     app.run(host="0.0.0.0", port=port)
